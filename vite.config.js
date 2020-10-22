@@ -1,6 +1,13 @@
 
 // const path = require('path')
+// function resolve (dir) {
+//   return path.join(__dirname, dir)
+// }
+
 module.exports = {
-  base: './', // 公共路径
-  assetsDir: 'assets'
+  base: './',
+  assetsDir: 'ASSETS'
+  // alias: {
+  //   '@': resolve('src')
+  // },
 }
