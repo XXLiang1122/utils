@@ -290,7 +290,7 @@ header {
     width: 400px;
     height: 400px;
     margin: 0 auto;
-    background-image: url('../assets/boy.png');
+    background-image: url('/src/assets/boy.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
