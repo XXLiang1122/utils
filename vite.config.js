@@ -7,7 +7,9 @@
 module.exports = {
   base: './',
   assetsDir: 'static',
-  assetsRoot: './'
+  vueTransformAssetUrls: {
+    base: './'
+  }
   // alias: {
   //   '@': resolve('src')
   // },
