@@ -201,7 +201,6 @@ export default {
       [boy, boy1, boy2, boy3].forEach(url => {
         const Img = new Image()
         Img.src = url
-        console.log(Img)
       })
     }
   },
