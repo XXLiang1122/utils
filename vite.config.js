@@ -6,7 +6,7 @@
 
 module.exports = {
   base: './',
-  assetsDir: 'ASSETS'
+  assetsDir: 'static'
   // alias: {
   //   '@': resolve('src')
   // },
