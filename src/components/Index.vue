@@ -131,7 +131,7 @@ export default {
       this.gif = new GIF({
         workers: 4,
         quality: this.config.quality,
-        workerScript: '/src/utils/gif.worker.js'
+        workerScript: './src/utils/gif.worker.js'
       })
       this.gif.on('finished', blob => {
         this.gifUrl = URL.createObjectURL(blob)
