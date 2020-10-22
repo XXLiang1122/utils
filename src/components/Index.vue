@@ -131,7 +131,7 @@ export default {
       this.gif = new GIF({
         workers: 4,
         quality: this.config.quality,
-        workerScript: './src/utils/gif.worker.js'
+        workerScript: process.env.NODE_ENV === 'production' ? './gif.worker.js' : './src/utils/gif.worker.js'
       })
       this.gif.on('finished', blob => {
         this.gifUrl = URL.createObjectURL(blob)
@@ -210,6 +210,7 @@ export default {
     this.canvas = this.$refs.canvas
     this.file = this.$refs.file
     this.preloadImgs()
+    console.log(process.env.NODE_ENV)
   }
 }
 </script>
