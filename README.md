@@ -1,6 +1,6 @@
 # video2sketch
 
-## [~click me~](https://xxliang1122.github.io/video2sketch/dist/)   
+## [click me](https://xxliang1122.github.io/video2sketch/dist/)   
 
 ### step 1
 ```bash
