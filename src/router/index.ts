@@ -2,16 +2,19 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '/',
-    name: 'Index',
-    component: () => import('../components/Index.vue')
+    path: '/simpleH5',
+    name: 'SimpleH5',
+    component: () => import('../components/simpleH5/Index.vue'),
+    meta: {
+      title: '简易h5'
+    }
   },
   {
-    path: '/createH5',
-    name: 'createH5',
-    component: () => import('../components/CreateH5.vue'),
+    path: '/sketchGif',
+    name: 'SketchGif',
+    component: () => import('../components/sketchGif/Index.vue'),
     meta: {
-      title: 'H5落地页生成'
+      title: '线稿gif生成'
     }
   }
 ]
