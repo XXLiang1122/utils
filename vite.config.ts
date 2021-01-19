@@ -8,6 +8,7 @@ export default defineConfig({
     '/@': resolve(__dirname, 'src')
   },
   build: {
-    base: './'
+    base: '/utils/dist',
+    assetsDir: 'static'
   }
 })

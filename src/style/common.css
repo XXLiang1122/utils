@@ -1,0 +1,33 @@
+body {
+  background: #66CC66;
+  display: flex;
+  justify-content: center;
+}
+
+.button-l {
+  display: inline-block;
+  min-width: 100px;
+  padding: 0 15px;
+  height: 40px;
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 6px;
+  background: #66CC66;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.button-m {
+  display: inline-block;
+  height: 35px;
+  padding: 0 10px;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  line-height: 35px;
+  border-radius: 6px;
+  background: #66CC66;
+  cursor: pointer;
+}

@@ -1,85 +1,83 @@
 <template>
-<div class="wrapper">
-  <header>H5 落地页生成</header>
-  <div class="content">
-    <div class="controls">
-      <div class="btn-group">
-        <label class="btn-upload" for="file">选择背景</label>
-        <input id="file" type="file" accept="image/*" @change="fileChange" ref="file">
-        <div class="btn-transform" @click="download">下载html</div>
-      </div>
-      <div class="config">
-        <div>标题：<input class="title" type="text" v-model="config.title" placeholder="请输入页面标题"></div>
-      </div>
+<Wrapper title="H5 落地页生成" width="600">
+  <div class="controls">
+    <div class="btn-group">
+      <label class="btn-upload button-l" for="file">选择背景</label>
+      <input id="file" type="file" accept="image/*" @change="fileChange" ref="file">
+      <div class="btn-transform button-l" @click="download">下载html</div>
     </div>
-    <div class="btn-config">
-      <div class="add-btn" @click="addBtn">添加固定按钮</div>
-      <div class="url-list">
-        <div
-          class="url-item"
-          v-for="(btn, index) in config.btn"
-          :key="index">
-          固定按钮({{index}})：<input class="href" type="text" v-model="btn.link" placeholder="请输入跳转链接">
-          <img @click="removeBtn(index)" class="btn-del" src="../../assets/remove.png">
-        </div>
-      </div>
+    <div class="config">
+      <div>标题：<input class="title" type="text" v-model="config.title" placeholder="请输入页面标题"></div>
     </div>
-
-    <div class="btn-config">
-      <div class="add-btn" @click="addFixedBtn">添加悬浮按钮</div>
-      <div class="url-list">
-        <div
-          class="url-item"
-          v-for="(btn, index) in config.fixedbtn"
-          :key="index">
-          悬浮按钮({{index}})：<input class="href" type="text" v-model="btn.link" placeholder="请输入跳转链接">
-          <img @click="removeFixedBtn(index)" class="btn-del" src="../../assets/remove.png">
-        </div>
-      </div>
-    </div>
-
-    <p class="tips">tips：增加的按钮是可点击的透明元素</p>
-
-    <p class="preview">预览</p>
-    <div class="phone">
+  </div>
+  <div class="btn-config">
+    <div class="add-btn button-m" @click="addBtn">添加固定按钮</div>
+    <div class="url-list">
       <div
-        class="viewport"
-        @drop="drop"
-        @dragover="dragover">
-        <img :src="config.image">
-        <div
-          v-for="(btn, index) in config.btn"
-          :key="index"
-          class="btn-draggable"
-          draggable="true"
-          :data-index="index"
-          data-type="absolute"
-          :style="{ 'left': btn.left + 'px', 'top': btn.top+ 'px' }"
-          @dragstart="dragstart"
-          @mouseup="resize">
-          固定按钮({{index}})
-        </div>
-        <div
-          v-for="(btn, index) in config.fixedbtn"
-          :key="index"
-          class="btn-draggable"
-          draggable="true"
-          :data-index="index"
-          data-type="fixed"
-          :style="{ 'left': btn.left + 'px', 'top': btn.top+ 'px' }"
-          @dragstart="dragstart"
-          @mouseup="resizeFixed">
-          悬浮按钮({{index}})
-        </div>
+        class="url-item"
+        v-for="(btn, index) in config.btn"
+        :key="index">
+        固定按钮({{index}})：<input class="href" type="text" v-model="btn.link" placeholder="请输入跳转链接">
+        <img @click="removeBtn(index)" class="btn-del" src="../../assets/remove.png">
       </div>
     </div>
   </div>
-</div>
+
+  <div class="btn-config">
+    <div class="add-btn button-m" @click="addFixedBtn">添加悬浮按钮</div>
+    <div class="url-list">
+      <div
+        class="url-item"
+        v-for="(btn, index) in config.fixedbtn"
+        :key="index">
+        悬浮按钮({{index}})：<input class="href" type="text" v-model="btn.link" placeholder="请输入跳转链接">
+        <img @click="removeFixedBtn(index)" class="btn-del" src="../../assets/remove.png">
+      </div>
+    </div>
+  </div>
+
+  <p class="tips">tips：增加的按钮是可点击的透明元素</p>
+
+  <p class="preview">预览</p>
+  <div class="phone">
+    <div
+      class="viewport"
+      @drop="drop"
+      @dragover="dragover">
+      <img :src="config.image">
+      <div
+        v-for="(btn, index) in config.btn"
+        :key="index"
+        class="btn-draggable"
+        draggable="true"
+        :data-index="index"
+        data-type="absolute"
+        :style="{ 'left': btn.left + 'px', 'top': btn.top+ 'px' }"
+        @dragstart="dragstart"
+        @mouseup="resize">
+        固定按钮({{index}})
+      </div>
+      <div
+        v-for="(btn, index) in config.fixedbtn"
+        :key="index"
+        class="btn-draggable"
+        draggable="true"
+        :data-index="index"
+        data-type="fixed"
+        :style="{ 'left': btn.left + 'px', 'top': btn.top+ 'px' }"
+        @dragstart="dragstart"
+        @mouseup="resizeFixed">
+        悬浮按钮({{index}})
+      </div>
+    </div>
+  </div>
+</Wrapper>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, reactive, toRefs } from 'vue'
 import { insertConfig } from '../../utils/template'
+import Wrapper from '../common/Wrapper.vue'
 
 const initBtn: Btn = {
   link: '',
@@ -108,6 +106,10 @@ interface Btn {
 
 export default defineComponent({
   name: 'SimpleH5',
+
+  components: {
+    Wrapper
+  },
 
   setup: () => {
     const data = reactive<Config>({
@@ -249,6 +251,7 @@ export default defineComponent({
       download,
       addBtn,
       removeBtn,
+      removeFixedBtn,
       addFixedBtn,
       drop,
       dragover,
@@ -261,28 +264,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 600px;
-  margin-top: 30px;
-  text-align: center;
-}
-header {
-  background: #006600;
-  line-height: 60px;
-  color: #fff;
-  font-size: 20px;
-  text-align: center;
-  border-radius: 5px 5px 0 0;
-}
-
 .content {
-  flex: auto;
-  padding: 20px;
-  background: #CCFF99;
-  border-radius: 0 0 5px 5px;
-
   .controls {
     display: flex;
     justify-content: space-between;
@@ -318,20 +300,6 @@ header {
     }
   }
 
-  .btn-upload,
-  .btn-transform {
-    display: inline-block;
-    width: 100px;
-    height: 40px;
-    color: #fff;
-    font-size: 18px;
-    text-align: center;
-    line-height: 40px;
-    border-radius: 6px;
-    background: #66CC66;
-    cursor: pointer;
-  }
-
   input[type="file"] {
     display: none;
   }
@@ -344,15 +312,6 @@ div.btn-config {
 
   .add-btn {
     flex: none;
-    width: 120px;
-    height: 35px;
-    color: #fff;
-    font-size: 16px;
-    text-align: center;
-    line-height: 35px;
-    border-radius: 6px;
-    background: #66CC66;
-    cursor: pointer;
   }
 
   input.href {

@@ -16,6 +16,14 @@ const routes = [
     meta: {
       title: '线稿gif生成'
     }
+  },
+  {
+    path: '/filter',
+    name: 'Filter',
+    component: () => import('../components/filter/Index.vue'),
+    meta: {
+      title: '图片处理'
+    }
   }
 ]
 

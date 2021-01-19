@@ -1,41 +1,43 @@
 <template>
-<div class="wrapper">
-  <header>线稿 GIF 生成器</header>
-  <div class="content">
-    <video ref="refVideoEle" :src="videoSrc" @play="play" @ended="ended" controls muted></video>
-    <canvas ref="refCanvasEle"></canvas>
-    <div class="controls">
-      <div class="btn-group">
-        <label class="btn-upload" for="file">选择视频</label>
-        <input id="file" type="file" accept="video/*" @change="fileChange" ref="file">
-        <div class="btn-transform" v-if="loading">正在生成...</div>
-        <div class="btn-transform" @click="playVideo" v-else>开始</div>
-      </div>
-      <div class="config">
-        <span>选择帧率：</span>
-        <input id="frame8" type="radio" name="frame" value="8" v-model="config.frame">
-        <label for="frame8">8帧</label>
-        <input id="frame16" type="radio" name="frame" value="16" v-model="config.frame">
-        <label for="frame16">16帧</label>
-        <input id="frame32" type="radio" name="frame" value="24" v-model="config.frame">
-        <label for="frame32">24帧</label>
-      </div>
+<Wrapper title="线稿 GIF 生成器" width="600">
+  <video ref="refVideoEle" :src="videoSrc" @play="play" @ended="ended" controls muted></video>
+  <canvas ref="refCanvasEle"></canvas>
+  <div class="controls">
+    <div class="btn-group">
+      <label class="btn-upload button-l" for="file">选择视频</label>
+      <input id="file" type="file" accept="video/*" @change="fileChange" ref="file">
+      <div class="btn-transform button-l" v-if="loading">正在生成...</div>
+      <div class="btn-transform button-l" @click="playVideo" v-else>开始</div>
     </div>
-    <p v-if="fileName" class="file-name">已选：{{ fileName }}， 大小：{{ size }}kb</p>
-    <div v-if="gifUrl && !loading">
-      <p class="tips">点击图片下载</p>
-      <a :href="gifUrl" target="_blank"><img class="result-gif" :src="gifUrl"></a>
+    <div class="config">
+      <span>选择帧率：</span>
+      <input id="frame8" type="radio" name="frame" value="8" v-model="config.frame">
+      <label for="frame8">8帧</label>
+      <input id="frame16" type="radio" name="frame" value="16" v-model="config.frame">
+      <label for="frame16">16帧</label>
+      <input id="frame32" type="radio" name="frame" value="24" v-model="config.frame">
+      <label for="frame32">24帧</label>
     </div>
-    <div class="boy" :class="{ 'snoring': loading }" v-else></div>
   </div>
-</div>
+  <p v-if="fileName" class="file-name">已选：{{ fileName }}， 大小：{{ size }}kb</p>
+  <div v-if="gifUrl && !loading">
+    <p class="tips">点击图片下载</p>
+    <a :href="gifUrl" target="_blank"><img class="result-gif" :src="gifUrl"></a>
+  </div>
+  <div class="boy" :class="{ 'snoring': loading }" v-else></div>
+</Wrapper>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, reactive, computed, toRefs, onMounted } from 'vue'
+import Wrapper from '../common/Wrapper.vue'
 
 export default defineComponent({
   name: 'SketchGif',
+
+  components: {
+    Wrapper
+  },
 
   setup: () => {
 
@@ -208,28 +210,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 600px;
-  margin-top: 30px;
-  text-align: center;
-}
-header {
-  background: #006600;
-  line-height: 60px;
-  color: #fff;
-  font-size: 20px;
-  text-align: center;
-  border-radius: 5px 5px 0 0;
-}
-
 .content {
-  flex: auto;
-  padding: 20px;
-  background: #CCFF99;
-  border-radius: 0 0 5px 5px;
-
   .controls {
     display: flex;
     justify-content: space-between;
@@ -250,20 +231,6 @@ header {
     label {
       margin-right: 10px;
     }
-  }
-
-  .btn-upload,
-  .btn-transform {
-    display: inline-block;
-    width: 100px;
-    height: 40px;
-    color: #fff;
-    font-size: 18px;
-    text-align: center;
-    line-height: 40px;
-    border-radius: 6px;
-    background: #66CC66;
-    cursor: pointer;
   }
 
   .file-name {
