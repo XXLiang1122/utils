@@ -3,3 +3,6 @@ declare module '*.vue' {
   const componentOptions: ComponentOptions
   export default componentOptions
 }
+
+declare const GIF: any
+declare const jsfeat: any
