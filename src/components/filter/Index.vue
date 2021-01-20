@@ -48,7 +48,18 @@
       </div>
     </div>
   </div>
-  
+
+  <div class="preset">
+    <label for="preset">预设：</label>
+    <select @change="selectPreset" id="preset">
+      <option
+       v-for="(name, index) in preset.list"
+       :key="name"
+       :selected="index === preset.curIndex"
+       >{{ name }}</option>
+    </select>
+  </div>
+
   <div class="board">
     <div class="preview" ref="refCanvasContainer" @mousewheel.prevent>
       <div class="canvas" :style="{ 'transform': `scale(${scale})` }" @mousedown="dragStart" @mousemove="dragOver" @mouseup="dragEnd">
@@ -56,7 +67,7 @@
       </div>
     </div>
     <div class="right">
-      <div class="origin" :style="{ 'background-image': `url(${imageUrl})` }"></div>
+      <div class="origin" :style="{ 'background-image': `url(${imageUrl})` }" @click="showImage"></div>
       <div class="scale-control">
         <span>{{ parseInt(scale * 100) }}%</span>
         <input v-model="scale" type="range" min="0.1" max="1.9" step="0.01" />
@@ -64,6 +75,7 @@
     </div>
   </div>
 </Wrapper>
+<div class="preview-image" v-show="showPreviewImg" @click="showPreviewImg = false"><img :src="imageUrl"></div>
 </template>
 
 <script lang="ts">
@@ -71,6 +83,7 @@ import { defineComponent, ref, reactive, toRefs, onMounted, nextTick } from 'vue
 import Wrapper from '../common/Wrapper.vue'
 import filterRgba from './filterRgba'
 import filterHsl from './filterHsl'
+import filterPreset from './filterPreset'
 
 interface Render {
   width: number; // 图片宽
@@ -127,7 +140,15 @@ export default defineComponent({
       imageUrl: '',
       imageName: 'img',
       mineType: 'image/png',
-      scale: 1
+      scale: 1,
+      showPreviewImg: false
+    })
+
+    /** 预设滤镜 */
+    const preset = reactive({
+      curIndex: 0,
+      list: ['选择滤镜', '灰度', '黑白', '反相', '去色', '怀旧', '连环画', '锐化（卷积）', '边缘（卷积）'],
+      methods: filterPreset
     })
 
     const refCanvas = ref<HTMLCanvasElement>()
@@ -149,6 +170,7 @@ export default defineComponent({
       }
       imgData = filterRgba(imgData, rgba)
       context?.putImageData(imgData, 0, 0)
+      preset.curIndex = 0
     }
 
     /** 改变hsl回调 */
@@ -160,6 +182,19 @@ export default defineComponent({
         imgData = filterRgba(imgData, rgba)
       }
       imgData = filterHsl(imgData, hsl)
+      context?.putImageData(imgData, 0, 0)
+      preset.curIndex = 0
+    }
+
+    /** 选择预设 */
+    const selectPreset = (e: Event) => {
+      reset()
+      preset.curIndex = (e.target as HTMLSelectElement).options.selectedIndex
+      if (!data.imageUrl) return
+      let imgData = originImgData()
+      if (preset.curIndex > 0) {
+        imgData = preset.methods[preset.curIndex - 1](imgData, context as CanvasRenderingContext2D)
+      }
       context?.putImageData(imgData, 0, 0)
     }
 
@@ -177,7 +212,7 @@ export default defineComponent({
       data.mineType = files[0].type
     }
 
-    /** 画布绘制图片 */
+    /** 首次画布绘制图片 */
     const drawImage = () => {
       const img = new Image()
       img.onload = () => {
@@ -229,6 +264,7 @@ export default defineComponent({
       hsl.h = 0
       hsl.s = 0
       hsl.l = 0
+      preset.curIndex = 0
       refCanvasContainer.value?.scrollTo(4500, 4600) // 画布居中
     }
 
@@ -248,6 +284,12 @@ export default defineComponent({
       reset()
     }
 
+    /** 图片预览 */
+    const showImage = () => {
+      if (!data.imageUrl) return
+      data.showPreviewImg = true
+    }
+
     onMounted(() => {
       context = (refCanvas.value as HTMLCanvasElement).getContext('2d')
       reset()
@@ -258,6 +300,7 @@ export default defineComponent({
       ...toRefs(hsl),
       ...toRefs(data),
       canvas,
+      preset,
       refCanvas,
       refCanvasContainer,
       rgbaChange,
@@ -267,7 +310,9 @@ export default defineComponent({
       dragOver,
       dragEnd,
       downloadImage,
-      resetStatus
+      resetStatus,
+      selectPreset,
+      showImage
     }
   }
 })
@@ -301,6 +346,18 @@ export default defineComponent({
     .value {
       margin-left: 10px;
     }
+  }
+}
+.preset {
+  margin-top: 20px;
+  text-align: left;
+  select {
+    width: 200px;
+    height: 26px;
+    font-size: 15px;
+  }
+  option {
+    background: #fff;
   }
 }
 .board {
@@ -346,6 +403,7 @@ export default defineComponent({
       background-position: center;
       background-size: contain;
       background-repeat: no-repeat;
+      cursor: zoom-in;
     }
     .scale-control {
       position: relative;
@@ -393,6 +451,22 @@ export default defineComponent({
         }
       }
     }
+  }
+}
+.preview-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0,0,0,.6);
+  cursor: zoom-out;
+  img {
+    max-width: 100%;
+    max-height: 100%;
   }
 }
 </style>

@@ -3,4 +3,5 @@
 - [sketchGif](https://xxliang1122.github.io/utils/dist/#/sketchGif)
 
 > https://github.com/inspirit/jsfeat  
-> https://github.com/jnordberg/gif.js
+> https://github.com/jnordberg/gif.js  
+> https://juejin.cn/post/6844904049649647630
